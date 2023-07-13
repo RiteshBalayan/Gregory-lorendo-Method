@@ -1,5 +1,9 @@
 import sqlite3
 def create_database():
+    '''
+    Create data base for storing Gl_calculation results
+
+    '''
     conn = sqlite3.connect('GL_database.db')  # creates a connection to the database, and if the database does not exist, it is created
     cursor = conn.cursor()
 
