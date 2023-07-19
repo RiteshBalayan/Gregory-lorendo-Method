@@ -34,9 +34,11 @@ class GL_calculator(GL_functions):
         self.rmax = self.priors['rmax']
         self.b_values = np.linspace(2, self.m, self.m - 1).astype(int)
         self.time = np.linspace(0, self.data[-1,0], 1000)#high resolution time for ploting only
-        self.res = []
+        self.prow_w = []
         self.prob_m = []
-        self.prob_w = []
+        self.prob_avg_w = []
+        self.freq = []
+        self.power = []
         #data and priors are dictionary specified when class is instantiated
         # m is max bins ,w_min/ w_max, r_min, r_max are specified in priors
         #W_values are discrete values of w where calculation is performed
@@ -48,7 +50,7 @@ class GL_calculator(GL_functions):
         # Integral over phi, will give normalised probability of frequency
         # Performed over all w_values and b_values
 
-        self.res = [
+        self.prob_w = [
             [
                 quad(
                     lambda phi: self.liklihood(w, phi, b)[0], 
@@ -58,6 +60,7 @@ class GL_calculator(GL_functions):
             ] for b in self.b_values
         ]
         # notice w is not integrated
+        return self.prob_w
 
 
 
@@ -73,10 +76,11 @@ class GL_calculator(GL_functions):
                     self.phi_limits[0], self.phi_limits[1], 
                     lambda w: self.priors['w_min'],
                     lambda w: self.priors['w_max'],
-                    epsabs=1.0e-2
+                    epsabs=1.0e-1
                 )[0]
             ) for b in self.b_values
         ]
+        return self.prob_m
 
 
 
@@ -105,7 +109,10 @@ class GL_calculator(GL_functions):
         #Compute power spectral density
         power = np.abs(F)**2
 
-        return freq, power
+        self.freq = freq
+        self.power = power
+
+        return self.freq, self.power
 
     def plot_FFT(self):
         freq, power = self.compute_fft()
@@ -146,7 +153,7 @@ class GL_calculator(GL_functions):
         #Cal be executed right after integral pw_dm, make sure calculation is done before executing
               
         fig = plt.figure(figsize=(12, 6))  # create a figure
-        plt.plot(self.w_values, (self.res[specified_bin-2]), 'o-')
+        plt.plot(self.w_values, (self.prob_w[specified_bin-2]), 'o-')
         plt.xlabel('w')
         plt.ylabel('Unnormalised Probability')
         plt.show()
@@ -165,14 +172,14 @@ class GL_calculator(GL_functions):
     def plot_Pw(self):
         # plot probability density of frequency after averaging over all the models 
 
-        pio = np.array([[self.prob_m[b-2] * x for x in res_row] for b, res_row in zip(self.b_values, self.res)])  
+        pio = np.array([[self.prob_m[b-2] * x for x in res_row] for b, res_row in zip(self.b_values, self.prob_w)])  
         #pio = np.array(hio)
         kio = sum(pio[i-2] for i in self.b_values)
         nio = [x/sum(self.prob_m) for x in kio]
-        self.prob_w = nio
+        self.prob_avg_w = nio
 
         fig = plt.figure(figsize=(12, 6))  # create a figure
-        plt.plot(self.w_values, self.prob_w, 'o-')    
+        plt.plot(self.w_values, self.prob_avg_w, 'o-')    
         plt.xlabel('W Values')
         plt.ylabel('Unnormalised Probability')
         plt.show()
