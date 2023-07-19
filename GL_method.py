@@ -60,7 +60,7 @@ class GL_calculator(GL_functions):
             ] for b in self.b_values
         ]
         # notice w is not integrated
-        return self.prob_w
+        
 
 
 
@@ -80,7 +80,7 @@ class GL_calculator(GL_functions):
                 )[0]
             ) for b in self.b_values
         ]
-        return self.prob_m
+        
 
 
 
@@ -112,11 +112,12 @@ class GL_calculator(GL_functions):
         self.freq = freq
         self.power = power
 
-        return self.freq, self.power
+        
 
     def plot_FFT(self):
-        freq, power = self.compute_fft()
-
+        
+        freq = np.array(self.freq)
+        power = np.array(self.power)
         #plottting
         plt.figure(figsize=(12,6))
         plt.title('Frequency Power Spectrum')
