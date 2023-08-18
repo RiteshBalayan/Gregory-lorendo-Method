@@ -125,9 +125,9 @@ class Oscilation_Detector(GL_functions):
         fig = plt.figure(figsize=(12, 6))  # create a figure
         plt.scatter(self.data[:, 0], self.data[:, 1], color = 'red')
         plt.vlines(self.data[:, 0], 0, self.data[:, 1], linewidth=0.5)
-        plt.xlabel('Time')
-        plt.ylabel('Flux')
-        plt.grid(True)
+        plt.xlabel('Time', color='black')
+        plt.ylabel('Flux', color='black')
+        plt.grid(True, linestyle='--', alpha=0.6)
         
         plt.show()
 
@@ -157,13 +157,14 @@ class Oscilation_Detector(GL_functions):
         power = np.array(self.power)
         #plottting
         plt.figure(figsize=(12,6))
-        plt.title('Frequency Power Spectrum')
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel('Power')
+        plt.title('')
+        plt.xlabel('Frequency [Hz]', fontsize=14, color='black')
+        plt.ylabel('Power', fontsize=14, color='black')
         #only plot the frequencies in range(w_min, w_max)
         # Mask on our required range
         mask = (freq >= self.w_min) & (freq <= self.w_max)
-        plt.plot(freq[mask], power[mask])
+        plt.plot(freq[mask], power[mask], color='black')
+        plt.grid(True, linestyle='--', alpha=0.6)
         plt.show()    
 
     def Compute_GL(self, bins = None,  resolution = None):
@@ -190,7 +191,7 @@ class Oscilation_Detector(GL_functions):
         plt.plot(self.w_values_GL, self.GL, color='black')
         # Adding labels and title
         plt.title('', fontsize=16, color='black')
-        plt.xlabel('w_values', fontsize=14, color='black')
+        plt.xlabel('Frequency [Hz]', fontsize=14, color='black')
         plt.ylabel('Log Likelihood', fontsize=14, color='black')
         plt.grid(True, linestyle='--', alpha=0.6)
         plt.show()  
@@ -235,11 +236,11 @@ class Oscilation_Detector(GL_functions):
         # Plot the log-marginal likelihood as a function of the period
         fig = plt.figure(figsize=(12, 6))  # create a figure
         fine_frequency = 1/np.array(self.GP_period)
-        plt.plot(fine_frequency, self.GP_liklehood, '-')
-        plt.xlabel('Period')
-        plt.ylabel('Log-Marginal Likelihood')
-        plt.title('Log-Marginal Likelihood as a Function of the Period')
-        plt.grid(True)
+        plt.plot(fine_frequency, self.GP_liklehood, '-', color='black')
+        plt.xlabel('Frequency [Hz]', fontsize=14, color='black')
+        plt.ylabel('Log Likelihood', fontsize=14, color='black')
+        plt.title('')
+        plt.grid(True, linestyle='--', alpha=0.6)
         plt.show()
 
     '''
@@ -282,7 +283,7 @@ class Oscilation_Detector(GL_functions):
         plt.ylabel('flux')
         # Optional: Adding a grid for better readability
         plt.grid(True, linestyle='--', alpha=0.6)
-        plt.title('Sample GL Function')
+        plt.title('')
         plt.show()
 
     def Sample_bin(self, frequency = None, bins = None ):
@@ -317,7 +318,7 @@ class Oscilation_Detector(GL_functions):
         plt.ylabel('flux')
         # Optional: Adding a grid for better readability
         plt.grid(True, linestyle='--', alpha=0.6)
-        plt.title('Sample GL Function')
+        plt.title('')
         plt.show()
 
 
@@ -359,7 +360,9 @@ class Oscilation_Detector(GL_functions):
         plt.ylim(-(self.rmax), (self.rmax))
         # Optional: Adding a grid for better readability
         plt.grid(True, linestyle='--', alpha=0.6)
-        plt.title('Sample GL Function')
+        plt.title('')
+        plt.xticks([])
+        plt.yticks([])
         plt.show()
 
     '''
@@ -472,7 +475,7 @@ class Gregory_functions:#This is Model Used to generate Bins Structure in GL Met
         #rmax will be specified in priors when class is instanciated
 
 
-class GL_Orignal(Gregory_functions):
+class gl_calculator(Gregory_functions):
     '''
     This Class will utilise functions defined in GL_function class and have two type of method.
     1) Performing Integrals

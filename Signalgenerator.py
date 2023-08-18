@@ -4,11 +4,6 @@ from scipy.signal import sawtooth
 import matplotlib.pyplot as plt
 
 
-import numpy as np
-import pandas as pd
-from scipy.signal import sawtooth
-import matplotlib.pyplot as plt
-
 class SignalGenerator:
     '''
     Generate fake periodic signal
@@ -94,10 +89,11 @@ class SignalGenerator:
             print("No data available. Generate a signal first.")
             return
         fig = plt.figure(figsize=(12, 6))
-        plt.plot(self.time_p, self.flux)
-        plt.xlabel('Time')
-        plt.ylabel('Flux')
-        plt.title('Time Series Data')
+        plt.plot(self.time_p, self.flux, color='black')
+        plt.xlabel('Time', color='black')
+        plt.ylabel('Flux', color='black')
+        plt.title('')
+        plt.grid(True, linestyle='--', alpha=0.6)
         plt.show()
 
     def plot_noise_data(self):
@@ -107,8 +103,9 @@ class SignalGenerator:
         time = self.data[:, 0]
         flux = self.data[:, 1]
         fig = plt.figure(figsize=(12, 6))
-        plt.plot(time, flux)
-        plt.xlabel('Time')
-        plt.ylabel('Flux')
-        plt.title('Time Series Data')
+        plt.plot(time, flux, color='black')
+        plt.xlabel('Time', color='black')
+        plt.ylabel('Flux', color='black')
+        plt.title('')
+        plt.grid(True, linestyle='--', alpha=0.6)
         plt.show()
